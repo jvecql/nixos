@@ -5,14 +5,6 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      #<nixos-hardware/lenovo/thinkpad/x270>
-      ./hardware-configuration.nix
-      #<home-manager/nixos>
-      #./home.nix
-    ];
-
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -20,12 +12,15 @@
   # enable flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  networking.hostName = "scribe"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  # store management
+  nix.settings.auto-optimise-store = true;
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  networking.hostName = "scribe";
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -37,8 +32,8 @@
     enable = true;
     settings = {
       CPU_SCALING_GOVERNOR_ON_AC = "performance";
-      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-      CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+      CPU_SCALING_GOVERNOR_ON_BAT = "performance";
+      CPU_ENERGY_PERF_POLICY_ON_BAT = "balance_performance";
       CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
 
       # BAT1 is the big removable battery
@@ -145,6 +140,7 @@
     git
     vim
     firefox
+    btop
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

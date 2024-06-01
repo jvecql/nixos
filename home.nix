@@ -9,9 +9,7 @@
     home.stateVersion = "23.11";
 
     home.packages = with pkgs; [
-      firefox
-      obsidian
-      btop
+#      obsidian
     ];
 
     programs.bash.enable = true;
