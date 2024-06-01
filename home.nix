@@ -4,11 +4,13 @@
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
 
+  # utilisateur: admin
   home-manager.users.admin = { pkgs, lib, ... }: {
     home.stateVersion = "23.11";
 
     home.packages = with pkgs; [
       firefox
+      obsidian
       btop
     ];
 
@@ -40,6 +42,7 @@
     };
   };
 
+  # utilisateur: bénévole
   home-manager.users.ben = { pkgs, ... }: {
     home.stateVersion = "23.11";
 
